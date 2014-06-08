@@ -3,7 +3,7 @@ taopypy-django-tests
 
 Estudos de testes com Django
 
-# Porque eu devo fazer testes
+## Porque eu devo fazer testes
 
 Os testes garatem a consistência do código em futuras modificações
 
@@ -15,7 +15,7 @@ Os testes garatem a consistência do código em futuras modificações
 - NÃO CORRIGEM BUGS
 - NÃO EVITAM BUGS
 
-# O que eu devo testar Django
+## O que eu devo testar Django
 
 - URLs
     Podem ser testadas para evitar erros de URL e para
@@ -46,7 +46,7 @@ Os testes garatem a consistência do código em futuras modificações
     Algumas pessoas testam a existem do aplicativo no Admin, para garantir
     que ele está registrado no Admin.
 
-# Como utilizar os API de testes do Django
+## Como utilizar os API de testes do Django
 
     - História:
         Montar um gerenciador de animais domésticos
@@ -66,6 +66,6 @@ Os testes garatem a consistência do código em futuras modificações
         em 1
 
 
-# Como montar um cenário de testes
-# Como garantir as histórias com testes
-# Refatoração com a ajuda dos testes
+## Como montar um cenário de testes
+## Como garantir as histórias com testes
+## Refatoração com a ajuda dos testes
