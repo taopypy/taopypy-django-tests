@@ -65,7 +65,8 @@ Os testes garatem a consistência do código em futuras modificações
         - todo animal tratado pela Dr. João precisa ter número de registro começado
         em 1
 
+## Tarefas
 
-## Como montar um cenário de testes
-## Como garantir as histórias com testes
-## Refatoração com a ajuda dos testes
+- Como montar um cenário de testes
+- Como garantir as histórias com testes
+- Refatoração com a ajuda dos testes
