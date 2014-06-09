@@ -47,7 +47,7 @@ Os testes garatem a consistência do código em futuras modificações
     que ele está registrado no Admin.
 
 
-## Principio de Tests com Django
+## Como montar um cenário de testes
 
 - fixtures: uma lista de dados pronta em JSON que deve ser carregada na base de testes antes de começar 
 
@@ -83,6 +83,5 @@ Os testes garatem a consistência do código em futuras modificações
 
 ## Tarefas
 
-- Como montar um cenário de testes
 - Como garantir as histórias com testes
 - Refatoração com a ajuda dos testes
