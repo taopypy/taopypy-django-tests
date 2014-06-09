@@ -57,8 +57,10 @@ Os testes garatem a consistência do código em futuras modificações
 
 - client: Todo os testes possuem um Client que serve para se conectar entre as URLs do projeto ou enviar dados por POST ou GET. 
 
+```
     Exemplos e mais informações: 
     https://docs.djangoproject.com/en/dev/topics/testing/overview/
+```
 
 ## Como utilizar os API de testes do Django
 
