@@ -46,6 +46,20 @@ Os testes garatem a consistência do código em futuras modificações
     Algumas pessoas testam a existem do aplicativo no Admin, para garantir
     que ele está registrado no Admin.
 
+
+## Principio de Tests com Django
+
+- fixtures: uma lista de dados pronta em JSON que deve ser carregada na base de testes antes de começar 
+
+- setUp: cadastra valores que devem ser padrões para todos os outros testes
+
+- tearDown: roda ao final de cada teste para manter a execução do novo teste sem informações extras que podem ser criadas durante os testes.
+
+- client: Todo os testes possuem um Client que serve para se conectar entre as URLs do projeto ou enviar dados por POST ou GET. 
+
+    Exemplos e mais informações: 
+    https://docs.djangoproject.com/en/dev/topics/testing/overview/
+
 ## Como utilizar os API de testes do Django
 
     - História:
