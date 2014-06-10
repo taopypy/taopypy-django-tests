@@ -62,7 +62,7 @@ Os testes garatem a consistência do código em futuras modificações
     https://docs.djangoproject.com/en/dev/topics/testing/overview/
 ```
 
-## Como utilizar os API de testes do Django
+## Como fazer testes em Django
 
     - História:
         Montar um gerenciador de animais domésticos
