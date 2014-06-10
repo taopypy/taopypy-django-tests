@@ -3,7 +3,7 @@ taopypy-django-tests
 
 Estudos de testes com Django
 
-## Porque eu devo fazer testes
+## Porque devemos fazer testes
 
 Os testes garatem a consistência do código em futuras modificações
 
