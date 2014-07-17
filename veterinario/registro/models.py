@@ -38,9 +38,19 @@ class Doutor(models.Model):
     tipo = models.CharField(max_length=50)
     animais = models.ManyToManyField(Animal)
 
+    def __init__(self, nome):
+        self.nome = nome
+        self.restricao_doutor_e_animal_id = [(u"João",'1'), (u"Carlos",'5')]
+
     def __unicode__(self):
         return 'Doutor %s' % self.nome
 
+    def tratarAnimal(self, animal):
+        primeiro_char_codigo_animal = animal.codigo[0]
+        for nome_doutor, _id in self.restricao_doutor_e_animal_id:
+            if self.nome == nome_doutor:
+                if primeiro_char_codigo_animal != _id:
+                    raise Exception(u"Animais tratados com %s devem ter número de registro iniciando em %s" % (self.nome, _id))
 
 class FactoryTratador(object):
     def getTratador(self, animal):
