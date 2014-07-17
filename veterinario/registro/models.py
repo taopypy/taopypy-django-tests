@@ -2,9 +2,11 @@ from django.db import models
 
 
 class Animal(models.Model):
+
     nome = models.CharField(max_length=50)
     idade = models.CharField(max_length=50)
     codigo = models.CharField(max_length=50)
+
 
     def __unicode__(self):
         return self.nome
