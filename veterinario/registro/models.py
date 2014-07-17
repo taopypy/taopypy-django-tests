@@ -3,7 +3,11 @@
 from django.db import models
 
 
+ANIMALS = (('DO', 'Dog'), ('CA', 'Cat'))
+
+
 class Animal(models.Model):
+    tipo = models.CharField(max_length=1, choices=ANIMALS)
     nome = models.CharField(max_length=50)
     idade = models.CharField(max_length=50)
     codigo = models.CharField(max_length=50)
