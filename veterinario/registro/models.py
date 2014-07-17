@@ -1,8 +1,17 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 
 
-class Animal(models.Model):
+ANIMALS = (('DO', 'Dog'), ('CA', 'Cat'))
 
+
+class Animal(models.Model):
+<<<<<<< HEAD
+
+=======
+    tipo = models.CharField(max_length=1, choices=ANIMALS)
+>>>>>>> ecba12472e3de433a131829f5dbcc3239e38aed6
     nome = models.CharField(max_length=50)
     idade = models.CharField(max_length=50)
     codigo = models.CharField(max_length=50)
@@ -11,6 +20,17 @@ class Animal(models.Model):
     def __unicode__(self):
         return self.nome
 
+    def falar(self):
+        pass
+
+class Gato(Animal):
+
+    def __unicode__(self):
+        return self.nome
+
+    def falar(self):
+        print "%s disse: Miau!" % self.nome
+        return "%s disse: Miau!" % self.nome
 
 class Vacina(models.Model):
     animal = models.ForeignKey(Animal)
@@ -28,4 +48,10 @@ class Doutor(models.Model):
     animais = models.ManyToManyField(Animal)
 
     def __unicode__(self):
-        return self.nome
+        return 'Doutor %s' % self.nome
+
+
+class FactoryTratador(object):
+    def getTratador(self, animal):
+        if animal.__class__ is Gato:
+            return Doutor(nome=u"João")
