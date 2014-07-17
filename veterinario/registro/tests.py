@@ -1,10 +1,86 @@
 # -*- coding: utf-8 -*-
 from django.test import TestCase
-from registro.models import Gato, Doutor, FactoryTratador
-from registro.models import Animal
-from veterinario.models import Animal
+from .forms import AnimalForm
+from .models import Animal
+from .models import Gato
+from .models import Doutor
+from .models import FactoryTratador
 
-# Create your tests here.
+
+class TestAnimalForm(TestCase):
+
+    def test_form_is_valid(self):
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':10,
+        }
+        animal = AnimalForm(data)
+        self.assertTrue(animal.is_valid())
+
+    def test_form_is_invalid_by_nome(self):
+        data = {
+            'tipo': 'DO',
+            'nome':None,
+            'idade':12,
+        }
+
+        animal = AnimalForm(data)
+        self.assertFalse(animal.is_valid())
+
+    def test_form_is_invalid_by_idade(self):
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':None,
+        }
+        animal = AnimalForm(data)
+        self.assertFalse(animal.is_valid())
+
+    def test_form_create_code(self):
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':12,
+        }
+
+        animal = AnimalForm(data)
+        animal.is_valid()
+        animal.save()
+
+        myanimal = Animal.objects.get(id=animal.instance.id)
+        self.assertTrue(myanimal.codigo)
+
+    def test_form_create_unique_code(self):
+
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':12,
+        }
+
+        animal = AnimalForm(data)
+        animal.is_valid()
+        animal.save()
+
+        myanimal = Animal.objects.get(id=animal.instance.id)
+        self.assertTrue(myanimal.codigo)
+
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':12,
+        }
+
+        animal2 = AnimalForm(data)
+        animal2.is_valid()
+        animal2.save()
+
+        myanimal2 = Animal.objects.get(id=animal2.instance.id)
+        self.assertTrue(myanimal2.codigo)
+
+        self.assertNotEqual(myanimal.codigo, myanimal2.codigo)
+
 
 class AnimalTestCase(TestCase):
     def setUp(self):
@@ -12,7 +88,6 @@ class AnimalTestCase(TestCase):
         Animal.objects.create(name="test2", idade="5", codigo="2")
         Animal.objects.create(name="test3", idade="3", codigo="3")
         _startDate = animal.idade_startdate.strftime('%m/%d/%Y')
-
 
     def test_animal_qual_vacina_tomou(self):
         toby = Animal.objects.get(home_id=homeid)
@@ -38,16 +113,6 @@ class DoutorAnimalTest(TestCase):
 
     def create_animal(self, tipo="CA", nome="Rex", idade=1, codigo="001"):
         return Animal.objects.create(tipo=tipo, nome=nome, idade=idade, codigo=codigo)
-
-    def test_doutor_creation(self):
-        d = self.create_doutor()
-        self.assertTrue(isinstance(d, Doutor))
-        self.assertEqual(d.__unicode__(), d.nome)
-
-    def test_animal_creation(self):
-        a = self.create_animal()
-        self.assertTrue(isinstance(a, Animal))
-        self.assertEqual(a.__unicode__(), a.nome)
 
     def test_doutor_carlos_trata_cachorro(self):
         c01 = self.create_animal(tipo="CA", nome="Miau", idade=1, codigo="001")
