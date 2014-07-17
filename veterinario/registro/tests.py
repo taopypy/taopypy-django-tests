@@ -84,10 +84,11 @@ class TestAnimalForm(TestCase):
 
 class AnimalTestCase(TestCase):
     def setUp(self):
-        Animal.objects.create(name="test1", idade="12", codigo="1")
-        Animal.objects.create(name="test2", idade="5", codigo="2")
-        Animal.objects.create(name="test3", idade="3", codigo="3")
-        _startDate = animal.idade_startdate.strftime('%m/%d/%Y')
+        Vacina.objects.create(animal="test1", data="12", tipo="1", doutor="")
+        Vacina.objects.create(name="test2", idade="5", codigo="2")
+        Vacina.objects.create(name="test3", idade="3", codigo="3")
+        if Vacina.objects.filter(data__month__gt=3).exits():
+            _startDate = Vacina.data_startdate.strftime('%m/%d/%Y')
 
     def test_animal_qual_vacina_tomou(self):
         toby = Animal.objects.get(home_id=homeid)
