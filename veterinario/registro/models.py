@@ -7,11 +7,7 @@ ANIMALS = (('DO', 'Dog'), ('CA', 'Cat'))
 
 
 class Animal(models.Model):
-<<<<<<< HEAD
-
-=======
     tipo = models.CharField(max_length=1, choices=ANIMALS)
->>>>>>> ecba12472e3de433a131829f5dbcc3239e38aed6
     nome = models.CharField(max_length=50)
     idade = models.CharField(max_length=50)
     codigo = models.CharField(max_length=50)
