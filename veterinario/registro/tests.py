@@ -1,7 +1,20 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
-from registro.models import Animal, Vacina, Doutor
+from registro.models import Gato, Doutor, FactoryTratador
+from registro.models import Animal
+
 
 # Create your tests here.
+class SiteServiceRequestItemFormTestCase(TestCase):
+
+    def test_doutor_joao_trata_todos_os_gatos(self):
+    	gato = Gato()
+    	f = FactoryTratador()
+
+    	doutor = Doutor(nome=u'João')
+
+    	self.assertEqual(doutor.nome, f.getTratador(gato).nome)
+
 
 # Testing the models
 class DoutorAnimalTest(TestCase):
@@ -33,3 +46,5 @@ class DoutorAnimalTest(TestCase):
         for animal in d.animais.all():
             if animal.tipo == 'DO':
                 self.assertTrue(d.nome == 'Carlos')
+
+
