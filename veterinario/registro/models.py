@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 
 
@@ -9,6 +11,17 @@ class Animal(models.Model):
     def __unicode__(self):
         return self.nome
 
+    def falar(self):
+        pass
+
+class Gato(Animal):
+
+    def __unicode__(self):
+        return self.nome
+
+    def falar(self):
+        print "%s disse: Miau!" % self.nome
+        return "%s disse: Miau!" % self.nome
 
 class Vacina(models.Model):
     animal = models.ForeignKey(Animal)
@@ -26,4 +39,10 @@ class Doutor(models.Model):
     animais = models.ManyToManyField(Animal)
 
     def __unicode__(self):
-        return self.nome
+        return 'Doutor %s' % self.nome
+
+
+class FactoryTratador(object):
+    def getTratador(self, animal):
+        if animal.__class__ is Gato:
+            return Doutor(nome=u"João")
