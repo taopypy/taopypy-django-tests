@@ -12,6 +12,7 @@ class Animal(models.Model):
     idade = models.CharField(max_length=50)
     codigo = models.CharField(max_length=50, unique=True, null=True, blank=True)
 
+
     def __unicode__(self):
         return self.nome
 
