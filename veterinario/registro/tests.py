@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
+import datetime
+
 from django.test import TestCase
 from .forms import AnimalForm
+from .forms import VacinadaForm
 from .models import Animal
 from .models import Gato
 from .models import Doutor
 from .models import FactoryTratador
+from .models import Vacina
+from .models import Vacinada
 
 
 class TestAnimalForm(TestCase):
@@ -82,29 +87,47 @@ class TestAnimalForm(TestCase):
         self.assertNotEqual(myanimal.codigo, myanimal2.codigo)
 
 
-class AnimalTestCase(TestCase):
+class VacinadaTestCase(TestCase):
     def setUp(self):
-        Vacina.objects.create(animal="test1", data="12", tipo="1", doutor="")
-        Vacina.objects.create(name="test2", idade="5", codigo="2")
-        Vacina.objects.create(name="test3", idade="3", codigo="3")
-        if Vacina.objects.filter(data__month__gt=3).exits():
-            _startDate = Vacina.data_startdate.strftime('%m/%d/%Y')
+        self.vacina = Vacina.objects.create(nome='sarampo', tipo='tipo01')
+        self.animal = Animal.objects.create(tipo='DO', nome='rex', idade='01', codigo='001')
+        self.doutor = Doutor.objects.create(nome="Joao", tipo="VET")
+        self.doutor.animais.add(self.animal)
+        self.vacinada_form = VacinadaForm(data={
+                                          'vacina': self.vacina.id,
+                                          'animal': self.animal.id,
+                                          'doutor': self.doutor.id})
 
-    def test_animal_qual_vacina_tomou(self):
-        toby = Animal.objects.get(home_id=homeid)
-        _startDate = toby.animal_startdate.strftime('%m/%d/%Y')
-        self.assertEqual(_startDate__gt(3), 'animal deve consultar novamente')
+    def test_nao_vacinado(self):
+        self.assertTrue(self.vacinada_form.is_valid())
 
+    def test_vacinada_periodo_invalido(self):
+        dois_meses = datetime.date.today() - datetime.timedelta(days=60)
+        vacinada = Vacinada.objects.create(vacina=self.vacina,
+                                           animal=self.animal,
+                                           data=dois_meses,
+                                           doutor=self.doutor)
+
+        self.assertFalse(self.vacinada_form.is_valid())
+
+    def test_vacinada_periodo_valido(self):
+        dois_meses = datetime.date.today() - datetime.timedelta(days=120)
+        vacinada = Vacinada.objects.create(vacina=self.vacina,
+                                           animal=self.animal,
+                                           data=dois_meses,
+                                           doutor=self.doutor)
+
+        self.assertTrue(self.vacinada_form.is_valid())
 
 class SiteServiceRequestItemFormTestCase(TestCase):
 
     def test_doutor_joao_trata_todos_os_gatos(self):
-        gato = Gato()
-        f = FactoryTratador()
+    	gato = Gato()
+    	f = FactoryTratador()
 
-        doutor = Doutor(nome=u'João')
+    	doutor = Doutor(nome=u'João')
 
-        self.assertEqual(doutor.nome, f.getTratador(gato).nome)
+    	self.assertEqual(doutor.nome, f.getTratador(gato).nome)
 
 
 class DoutorAnimalTest(TestCase):
