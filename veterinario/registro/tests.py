@@ -1,37 +1,128 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
-from django import forms
-from registro.forms import AnimalForm
+from .forms import AnimalForm
+from .models import Animal
+from .models import Gato
+from .models import Doutor
+from .models import FactoryTratador
 
 
-# Create your tests here.
 class TestAnimalForm(TestCase):
 
-    def test_animal_cachorro_tem_que_passar(self):
-        animal = {
-            'tipo': 1,
-            'nome': 'test_1',
-            'idade': '10',
-            'codigo': 'abc123'
+    def test_form_is_valid(self):
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':10,
         }
-        animal_form = AnimalForm(data=animal)
-        self.assertTrue(animal_form.is_valid())
+        animal = AnimalForm(data)
+        self.assertTrue(animal.is_valid())
 
-    def test_animal_gato_tem_que_passar(self):
-        animal = {
-            'tipo': 2,
-            'nome': 'test_2',
-            'idade': '10',
-            'codigo': 'abc123'
+    def test_form_is_invalid_by_nome(self):
+        data = {
+            'tipo': 'DO',
+            'nome':None,
+            'idade':12,
         }
-        animal_form = AnimalForm(data=animal)
-        self.assertTrue(animal_form.is_valid())
 
-    def test_animal_nao_cachorro_ou_gato_deve_gerar_erro(self):
-        animal = {
-            'tipo': 3,
-            'nome': 'test_3',
-            'idade': '10',
-            'codigo': 'abc123'
+        animal = AnimalForm(data)
+        self.assertFalse(animal.is_valid())
+
+    def test_form_is_invalid_by_idade(self):
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':None,
         }
-        animal_form = AnimalForm(data=animal)
-        self.assertFalse(animal_form.is_valid())
+        animal = AnimalForm(data)
+        self.assertFalse(animal.is_valid())
+
+    def test_form_create_code(self):
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':12,
+        }
+
+        animal = AnimalForm(data)
+        animal.is_valid()
+        animal.save()
+
+        myanimal = Animal.objects.get(id=animal.instance.id)
+        self.assertTrue(myanimal.codigo)
+
+    def test_form_create_unique_code(self):
+
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':12,
+        }
+
+        animal = AnimalForm(data)
+        animal.is_valid()
+        animal.save()
+
+        myanimal = Animal.objects.get(id=animal.instance.id)
+        self.assertTrue(myanimal.codigo)
+
+        data = {
+            'tipo': 'DO',
+            'nome':'Ruffus',
+            'idade':12,
+        }
+
+        animal2 = AnimalForm(data)
+        animal2.is_valid()
+        animal2.save()
+
+        myanimal2 = Animal.objects.get(id=animal2.instance.id)
+        self.assertTrue(myanimal2.codigo)
+
+        self.assertNotEqual(myanimal.codigo, myanimal2.codigo)
+
+
+class AnimalTestCase(TestCase):
+    def setUp(self):
+        Vacina.objects.create(animal="test1", data="12", tipo="1", doutor="")
+        Vacina.objects.create(name="test2", idade="5", codigo="2")
+        Vacina.objects.create(name="test3", idade="3", codigo="3")
+        if Vacina.objects.filter(data__month__gt=3).exits():
+            _startDate = Vacina.data_startdate.strftime('%m/%d/%Y')
+
+    def test_animal_qual_vacina_tomou(self):
+        toby = Animal.objects.get(home_id=homeid)
+        _startDate = toby.animal_startdate.strftime('%m/%d/%Y')
+        self.assertEqual(_startDate__gt(3), 'animal deve consultar novamente')
+
+
+class SiteServiceRequestItemFormTestCase(TestCase):
+
+    def test_doutor_joao_trata_todos_os_gatos(self):
+        gato = Gato()
+        f = FactoryTratador()
+
+        doutor = Doutor(nome=u'João')
+
+        self.assertEqual(doutor.nome, f.getTratador(gato).nome)
+
+
+class DoutorAnimalTest(TestCase):
+
+    def create_doutor(self, nome="Joao", tipo="veterinario"):
+        return Doutor.objects.create(nome=nome, tipo=tipo)
+
+    def create_animal(self, tipo="CA", nome="Rex", idade=1, codigo="001"):
+        return Animal.objects.create(tipo=tipo, nome=nome, idade=idade, codigo=codigo)
+
+    def test_doutor_carlos_trata_cachorro(self):
+        c01 = self.create_animal(tipo="CA", nome="Miau", idade=1, codigo="001")
+        c02 = self.create_animal(tipo="DO", nome="Auau", idade=2, codigo="002")
+
+        d = self.create_doutor(nome="Carlos", tipo="veterinario")
+        d.animais.add(c01)
+        d.animais.add(c02)
+
+        for animal in d.animais.all():
+            if animal.tipo == 'DO':
+                self.assertTrue(d.nome == 'Carlos')
