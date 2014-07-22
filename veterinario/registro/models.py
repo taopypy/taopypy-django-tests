@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import datetime
 from django.db import models
 import uuid
 
@@ -35,23 +35,17 @@ class Gato(Animal):
 
 
 class Vacina(models.Model):
-    animal = models.ForeignKey(Animal)
-    data = models.DateField(auto_now=True)
+    nome = models.CharField(max_length=255)
     tipo = models.CharField(max_length=50)
-    doutor = models.CharField(max_length=50)
 
     def __unicode__(self):
-        return self.tipo
+        return self.name
 
 
 class Doutor(models.Model):
     nome = models.CharField(max_length=50)
     tipo = models.CharField(max_length=50)
     animais = models.ManyToManyField(Animal)
-
-    def __init__(self, nome):
-        self.nome = nome
-        self.restricao_doutor_e_animal_id = [(u"João",'1'), (u"Carlos",'5')]
 
     def __unicode__(self):
         return 'Doutor %s' % self.nome
@@ -62,6 +56,17 @@ class Doutor(models.Model):
             if self.nome == nome_doutor:
                 if primeiro_char_codigo_animal != _id:
                     raise Exception(u"Animais tratados com %s devem ter número de registro iniciando em %s" % (self.nome, _id))
+
+
+class Vacinada(models.Model):
+    vacina = models.ForeignKey(Vacina)
+    animal = models.ForeignKey(Animal)
+    data = models.DateTimeField(default=datetime.datetime.now(), blank=True, null=True)
+    doutor = models.ForeignKey(Doutor)
+
+    def __unicode__(self):
+        return self.data
+
 
 class FactoryTratador(object):
     def getTratador(self, animal):
