@@ -31,4 +31,3 @@ class VacinadaForm(forms.ModelForm):
         if ultima_vacina.date() >= tres_meses.date():
             raise forms.ValidationError('Seu animal ja foi vacinado')
         return self.cleaned_data
-
