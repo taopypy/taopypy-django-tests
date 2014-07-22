@@ -2,6 +2,11 @@ from django.db import models
 
 
 class Animal(models.Model):
+    ANIMAL_CHOICES = (
+        (1, 'Cachorro'),
+        (2, 'Gato'),
+    )
+    tipo = models.PositiveIntegerField(choices=ANIMAL_CHOICES)
     nome = models.CharField(max_length=50)
     idade = models.CharField(max_length=50)
     codigo = models.CharField(max_length=50)
