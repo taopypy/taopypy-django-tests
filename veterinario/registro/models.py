@@ -7,6 +7,11 @@ ANIMALS = (('DO', 'Dog'), ('CA', 'Cat'))
 
 
 class Animal(models.Model):
+    """
+    Stores a single blog entry, related to :model:`blog.Blog` and
+    :model:`auth.User`.
+
+    """
     tipo = models.CharField(max_length=1, choices=ANIMALS)
     nome = models.CharField(max_length=50)
     idade = models.CharField(max_length=50)
@@ -44,7 +49,7 @@ class Vacina(models.Model):
 class Doutor(models.Model):
     nome = models.CharField(max_length=50)
     tipo = models.CharField(max_length=50)
-    animais = models.ManyToManyField(Animal)
+    animais = models.ManyToManyField(Animal)  # add through and explain
 
     def __unicode__(self):
         return 'Doutor %s' % self.nome

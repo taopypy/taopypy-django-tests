@@ -16,6 +16,7 @@ class VacinaForm(forms.ModelForm):
     class Meta:
         model = Vacina
 
+
 class VacinadaForm(forms.ModelForm):
     class Meta:
         model = Vacinada
