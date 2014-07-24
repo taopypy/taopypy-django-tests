@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import datetime
 from django.db import models
-import uuid
 
 ANIMALS = (('DO', 'Dog'), ('CA', 'Cat'))
 
@@ -12,35 +11,22 @@ class Animal(models.Model):
     :model:`auth.User`.
 
     """
-    tipo = models.CharField(max_length=1, choices=ANIMALS)
+    tipo = models.CharField(max_length=2, choices=ANIMALS)
     nome = models.CharField(max_length=50)
-    idade = models.CharField(max_length=50)
-    codigo = models.CharField(max_length=50, unique=True, null=True, blank=True)
+    data_nascimento = models.DateField(null=True, blank=True)
+
+    def idade(self):
+        if not self.data_nascimento:
+            return 0
+        return datetime.date.today().year - self.data_nascimento.year
+
 
     def __unicode__(self):
         return self.nome
-
-    def save(self, *args, **kwargs):
-        self.codigo = uuid.uuid1()
-        super(Animal, self).save(*args, **kwargs)
-
-    def falar(self):
-        pass
-
-
-class Gato(Animal):
-
-    def __unicode__(self):
-        return self.nome
-
-    def falar(self):
-        print "%s disse: Miau!" % self.nome
-        return "%s disse: Miau!" % self.nome
 
 
 class Vacina(models.Model):
     nome = models.CharField(max_length=255)
-    tipo = models.CharField(max_length=50)
 
     def __unicode__(self):
         return self.name
@@ -48,18 +34,10 @@ class Vacina(models.Model):
 
 class Doutor(models.Model):
     nome = models.CharField(max_length=50)
-    tipo = models.CharField(max_length=50)
-    animais = models.ManyToManyField(Animal)  # add through and explain
+    animais = models.ManyToManyField(Animal)
 
     def __unicode__(self):
         return 'Doutor %s' % self.nome
-
-    def tratarAnimal(self, animal):
-        primeiro_char_codigo_animal = animal.codigo[0]
-        for nome_doutor, _id in self.restricao_doutor_e_animal_id:
-            if self.nome == nome_doutor:
-                if primeiro_char_codigo_animal != _id:
-                    raise Exception(u"Animais tratados com %s devem ter número de registro iniciando em %s" % (self.nome, _id))
 
 
 class Vacinada(models.Model):
@@ -70,9 +48,3 @@ class Vacinada(models.Model):
 
     def __unicode__(self):
         return self.data
-
-
-class FactoryTratador(object):
-    def getTratador(self, animal):
-        if animal.__class__ is Gato:
-            return Doutor(nome=u"João")
