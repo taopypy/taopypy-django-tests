@@ -7,8 +7,8 @@ Estudos de testes com Django
 
 Os testes garatem a consistência do código em futuras modificações
 
-- Erros de implementação de novas funcionálidades
-- Correções ou alteração em aplicação já existestes
+- Erros de implementação de novas funcionálidades 
+- Correções ou alteração em aplicação já existentes
 - Garante a consistência de uma história ou tarefa
 - Podem ser utilizados como documentação
 - Evita reversão de código
